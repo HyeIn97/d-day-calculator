@@ -1,4 +1,4 @@
-package com.example.d_day_app
+package com.example.d_day_calculator
 
 import org.junit.Test
 

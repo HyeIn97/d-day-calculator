@@ -1,4 +1,4 @@
-package com.example.d_day_app
+package com.example.d_day_calculator
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

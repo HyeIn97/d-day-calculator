@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "d_day_app"
+rootProject.name = "d_day_calculator"
 include(":app")

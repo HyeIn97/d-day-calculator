@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.d_day_app"
+    namespace = "com.example.d_day_calculator"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.d_day_app"
-        minSdk = 28
+        applicationId = "com.example.d_day_calculator"
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
