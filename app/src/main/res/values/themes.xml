@@ -1,9 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.D_day_app" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.d_day_calculator" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.D_day_app" parent="Base.Theme.D_day_app" />
+    <style name="Theme.d_day_calculator" parent="Base.Theme.d_day_calculator" />
 </resources>
