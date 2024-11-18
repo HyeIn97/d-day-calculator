@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">디데이</string>
+    <string name="app_name">D-DAY</string>
+    <string name="d_day">D-Day</string>
+    <string name="empty">디데이를 설정하세요.</string>
 </resources>
