@@ -6,28 +6,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/outerSpace"
-    tools:context=".DayActivity">
+    tools:context=".ui.DayActivity">
 
     <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/title_edt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/eggshell"
+        android:background="@drawable/item_background"
+        android:gravity="center"
+        android:hint="TEST"
         android:inputType="text"
-        android:maxLength="10"
+        android:maxLength="15"
         android:maxLines="1"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
-        android:text="TEST"
         android:textColor="@color/outerSpace"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <DatePicker
+        android:id="@+id/day_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:calendarTextColor="@color/eggshell"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:theme="@style/SpinnerDatePickerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_edt" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/wight_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="위젯 설정"
+        android:textColor="@color/eggshell"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@id/day_spinner"
+        app:layout_constraintTop_toBottomOf="@id/day_spinner" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="1일 부터 시작"
+        android:textColor="@color/eggshell"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@id/day_spinner"
+        app:layout_constraintTop_toBottomOf="@id/wight_txt" />
+
+    <FrameLayout
+        android:id="@+id/save_btn"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/charlestonGreen"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_edit" />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
