@@ -1,4 +1,4 @@
-package com.example.d_day_calculator
+package com.example.d_day_calculator.ui
 
 import android.content.Intent
 import android.os.Bundle

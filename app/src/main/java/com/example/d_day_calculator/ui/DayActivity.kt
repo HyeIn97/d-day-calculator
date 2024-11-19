@@ -1,10 +1,8 @@
-package com.example.d_day_calculator
+package com.example.d_day_calculator.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.d_day_calculator.R
 
 class DayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

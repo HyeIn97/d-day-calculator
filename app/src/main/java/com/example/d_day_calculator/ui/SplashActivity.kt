@@ -1,9 +1,10 @@
-package com.example.d_day_calculator
+package com.example.d_day_calculator.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.d_day_calculator.R
 import java.util.Timer
 import kotlin.concurrent.schedule
 
