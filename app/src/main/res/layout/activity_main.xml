@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/outerSpace"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/empty_txt"
@@ -15,9 +15,9 @@
         android:gravity="center"
         android:text="@string/empty"
         android:textColor="@color/eggshell"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="normal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/add_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
     <FrameLayout
         android:id="@+id/add_btn"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:background="@color/charlestonGreen"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,11 +45,9 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
             android:src="@drawable/ic_plus" />
 
     </FrameLayout>
