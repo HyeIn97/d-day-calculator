@@ -5,18 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/citrineWhite"
-    tools:context=".SplashActivity">
+    android:background="@color/outerSpace"
+    tools:context=".ui.SplashActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
         android:gravity="center"
-        android:text="D-Day"
-        android:textColor="@color/poloBlue"
+        android:text="@string/d_day"
+        android:textColor="@color/eggshell"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:layout_marginTop="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -1,9 +1,20 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.d_day_calculator" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!--         <item name="colorPrimaryDark">@color/charlestonGreen</item>-->
     </style>
 
-    <style name="Theme.d_day_calculator" parent="Base.Theme.d_day_calculator" />
+    <style name="Theme.d_day_calculator" parent="Base.Theme.d_day_calculator">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="colorPrimaryDark">@color/outerSpace</item>
+        <item name="android:statusBarColor">@color/outerSpace</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="SpinnerDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/brightGray</item>
+        <item name="colorControlNormal">@color/brightGray</item>
+        <item name="android:textColorHighlight">@color/brightGray</item>
+    </style>
 </resources>

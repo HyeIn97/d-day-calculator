@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">디데이</string>
+    <string name="app_name">D-DAY</string>
+    <string name="d_day">D-Day</string>
+    <string name="empty">디데이를 설정하세요.</string>
+    <string name="title_hint">15자 이내로 제목을 입력하세요.</string>
+    <string name="widget">위젯 설정</string>
+    <string name="day_setting">1일 부터 시작</string>
 </resources>
