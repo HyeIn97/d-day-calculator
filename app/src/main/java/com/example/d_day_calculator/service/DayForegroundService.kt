@@ -9,7 +9,8 @@ import androidx.core.app.NotificationCompat
 import com.example.d_day_calculator.R
 
 class DayForegroundService : Service() {
-    private val CHANEL_ID = "1001"
+    private val SERVICE_ID = 10001
+    private val CHANEL_ID = "dayChanel"
     private val CHANEL_NAME = "DAY_CHANEL"
     private var notificationManager: NotificationManager? = null
     private var notificationChannel: NotificationChannel? = null
@@ -25,11 +26,14 @@ class DayForegroundService : Service() {
             NotificationChannel(CHANEL_ID, CHANEL_NAME, NotificationManager.IMPORTANCE_NONE)
         notificationBuilder = NotificationCompat.Builder(this@DayForegroundService, CHANEL_ID)
             .setSmallIcon(R.drawable.ic_d)
+            .setContentTitle("테스트 타이틀")
+            .setContentText("콘텐츠 텍스트")
 
-        startForeground(1000, notificationBuilder?.build())
+        startForeground(SERVICE_ID, notificationBuilder?.build())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
 
         return START_STICKY
     }
