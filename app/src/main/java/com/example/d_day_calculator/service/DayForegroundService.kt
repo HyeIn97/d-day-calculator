@@ -25,6 +25,8 @@ class DayForegroundService : Service() {
             NotificationChannel(CHANEL_ID, CHANEL_NAME, NotificationManager.IMPORTANCE_NONE)
         notificationBuilder = NotificationCompat.Builder(this@DayForegroundService, CHANEL_ID)
             .setSmallIcon(R.drawable.ic_d)
+
+        startForeground(1000, notificationBuilder?.build())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
