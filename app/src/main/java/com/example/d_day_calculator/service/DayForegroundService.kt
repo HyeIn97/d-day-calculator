@@ -29,11 +29,14 @@ class DayForegroundService : Service() {
             .setContentTitle("테스트 타이틀")
             .setContentText("콘텐츠 텍스트")
 
+        notificationChannel?.let {
+            notificationManager?.createNotificationChannel(it)
+        }
+
         startForeground(SERVICE_ID, notificationBuilder?.build())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
 
         return START_STICKY
     }
