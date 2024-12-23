@@ -9,6 +9,8 @@ import com.example.d_day_calculator.service.DayForegroundService
 
 class DayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDayBinding
+    private var notificationID = 1001
+    private val dayService: DayForegroundService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +19,15 @@ class DayActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initListener()
+
     }
 
     private fun initListener() {
         binding.saveBtn.setOnClickListener {
+            ++notificationID
+
             startForegroundService(Intent(this, DayForegroundService::class.java))
+
         }
     }
 }
