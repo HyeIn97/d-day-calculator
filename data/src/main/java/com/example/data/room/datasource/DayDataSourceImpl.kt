@@ -1,4 +1,24 @@
 package com.example.data.room.datasource
 
-class DayDataSourceImpl {
+import com.example.data.room.dao.DayDao
+import com.example.data.room.entity.DayEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class DayDataSourceImpl @Inject constructor(private val dao: DayDao) : DayDataSource {
+    private val job = CoroutineScope(Dispatchers.IO)
+
+    override suspend fun insertDay(day: DayEntity): Flow<Int> = callbackFlow {
+        job.launch {
+            val success = dao.insertDay(day)
+            trySend(success.toInt())
+        }
+
+        awaitClose()
+    }
 }

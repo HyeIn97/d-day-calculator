@@ -30,6 +30,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.room)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.hilt)
     ksp(libs.androidx.hilt.compiler)
 }

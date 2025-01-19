@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.hilt)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -30,4 +32,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.hilt)
+    ksp(libs.androidx.hilt.compiler)
 }

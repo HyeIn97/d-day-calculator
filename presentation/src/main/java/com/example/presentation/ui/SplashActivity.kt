@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.presentation.R
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Timer
 import kotlin.concurrent.schedule
 
