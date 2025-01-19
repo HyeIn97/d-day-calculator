@@ -15,11 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.d_day_calculator">
+
         <activity
-            android:name=".ui.DayActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.example.presentation.ui.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.MainActivity"
-            android:exported="false" />
 
         <service
-            android:name=".service.DayForegroundService"
+            android:name="com.example.presentation.service.DayForegroundService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
     </application>

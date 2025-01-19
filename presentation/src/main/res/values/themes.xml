@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.D_day_calculator" parent="Base.Theme.D_day_calculator" />
+
+    <style name="SpinnerDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/brightGray</item>
+        <item name="colorControlNormal">@color/brightGray</item>
+        <item name="android:textColorHighlight">@color/brightGray</item>
+    </style>
 </resources>

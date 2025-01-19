@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/outerSpace"
+    tools:context="com.example.presentation.ui.DayActivity">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/title_edt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/item_background"
+        android:gravity="center"
+        android:hint="@string/title_hint"
+        android:inputType="text"
+        android:maxLength="15"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/outerSpace"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <DatePicker
+        android:id="@+id/day_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:calendarTextColor="@color/eggshell"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:theme="@style/SpinnerDatePickerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_edt" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/widget_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/widget"
+        android:textColor="@color/eggshell"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@id/day_spinner"
+        app:layout_constraintTop_toBottomOf="@id/day_spinner" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/widget_txt"
+        app:layout_constraintEnd_toEndOf="@id/day_spinner"
+        app:layout_constraintTop_toTopOf="@id/widget_txt" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/day_setting_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/day_setting"
+        android:textColor="@color/eggshell"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@id/day_spinner"
+        app:layout_constraintTop_toBottomOf="@id/widget_txt" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/day_setting_txt"
+        app:layout_constraintEnd_toEndOf="@id/day_spinner"
+        app:layout_constraintTop_toTopOf="@id/day_setting_txt" />
+
+    <FrameLayout
+        android:id="@+id/save_btn"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/charlestonGreen"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_edit" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,4 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="charlestonGreen">#222831</color>
+    <color name="crayola">#31363F</color>
+    <color name="greenSheen">#76ABAE</color>
+    <color name="brightGray">#EEEEEE</color>
+
+    <color name="eggshell">#F1ECD9</color>
+    <color name="foggyGray">#CEC8B2</color>
+    <color name="mantle">#8B998C</color>
+    <color name="corduroy">#626E6A</color>
+    <color name="outerSpace">#45504C</color>
 </resources>
