@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.d_day_calculator"
-        minSdk = 30
+        minSdk = 31
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":presentation"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

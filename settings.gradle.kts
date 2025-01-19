@@ -21,3 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "d_day_calculator"
 include(":app")
+include(":domain")
+include(":data")
+include(":presentation")
