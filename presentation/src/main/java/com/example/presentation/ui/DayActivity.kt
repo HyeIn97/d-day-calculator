@@ -52,7 +52,7 @@ class DayActivity : AppCompatActivity() {
     private fun initListener() = with(binding) {
         saveBtn.setOnClickListener {
             val endDay = daySpinner.year.toString() + "-" + daySpinner.month + "-" + daySpinner.dayOfMonth
-            viewModel.insertDay(DayModel(titleEdt.toString(), today, endDay, widget.isChecked, setting.isChecked))
+            viewModel.insertDay(DayModel(titleEdt.text.toString(), today, endDay, widget.isChecked, setting.isChecked))
         }
     }
 }
