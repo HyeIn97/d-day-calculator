@@ -20,7 +20,7 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
             val list = arrayListOf<DayModel>()
 
             days.map { day ->
-                list.add(DayModel(day.title, day.startDay, day.startDay, day.widget, day.isInclude))
+                list.add(DayModel(day.title, day.startDay, day.endDay, day.widget, day.isInclude))
             }
 
             emit(list)
