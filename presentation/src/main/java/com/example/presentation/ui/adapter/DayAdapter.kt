@@ -5,8 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.DayModel
 import com.example.presentation.databinding.ItemDayBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
-class DayAdapter (private val days: ArrayList<DayModel>): RecyclerView.Adapter<DayAdapter.DayViewHolder>(){
+class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DayViewHolder(ItemDayBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun getItemCount() = days.size
@@ -15,12 +18,25 @@ class DayAdapter (private val days: ArrayList<DayModel>): RecyclerView.Adapter<D
         holder.onBind(days[position])
     }
 
-    class DayViewHolder(private val binding: ItemDayBinding) : RecyclerView.ViewHolder(binding.root){
-        fun onBind(item: DayModel){
+    class DayViewHolder(private val binding: ItemDayBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(item: DayModel) {
+            var day: Long = 0
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            val endDay = dateFormat.parse(item.endDay)?.time
+            val today = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+            }.time.time
+
+            endDay?.let {
+                day = ((today - endDay) / (60 * 60 * 24 * 1000))
+            }
+
             binding.run {
                 titleTxt.text = item.title
                 insertDayTxt.text = item.startDay
-                dayTxt.text = "+50"
+                dayTxt.text = if (day > 0) "+$day" else day.toString()
             }
         }
     }
