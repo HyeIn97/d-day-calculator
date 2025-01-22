@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this), null, false)
         setContentView(binding.root)
 
-        initListener()
-        initAdatper()
         viewModel.getAllDay()
+        initListener()
+        initAdapter()
         lifecycleScope()
     }
 
@@ -42,20 +42,23 @@ class MainActivity : AppCompatActivity() {
             launch {
                 viewModel.days.collect {
                     it?.let {
-                       days.addAll(it)
-                        dayAdapter.notifyItemRangeChanged(0, it.size)
-                        binding.emptyTxt.visibility = View.GONE
-                        binding.dDayRv.visibility = View.VISIBLE
-                    }?: run{
-                        binding.dDayRv.visibility = View.GONE
-                        binding.emptyTxt.visibility = View.VISIBLE
+                        if (it.isEmpty()) {
+                            binding.dDayRv.visibility = View.GONE
+                            binding.emptyTxt.visibility = View.VISIBLE
+                        } else {
+                            days.clear()
+                            days.addAll(it)
+                            dayAdapter.notifyItemRangeChanged(0, it.size)
+                            binding.emptyTxt.visibility = View.GONE
+                            binding.dDayRv.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun initAdatper() = with(binding){
+    private fun initAdapter() = with(binding) {
         dDayRv.apply {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = dayAdapter
