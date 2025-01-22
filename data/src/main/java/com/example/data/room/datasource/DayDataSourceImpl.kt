@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,5 +21,11 @@ class DayDataSourceImpl @Inject constructor(private val dao: DayDao) : DayDataSo
         }
 
         awaitClose()
+    }
+
+    override suspend fun getAllDay(): Flow<List<DayEntity>> = flow {
+        dao.getAllDay().collect {
+            emit(it)
+        }
     }
 }

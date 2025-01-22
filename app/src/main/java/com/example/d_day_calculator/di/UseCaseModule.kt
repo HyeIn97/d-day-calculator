@@ -1,6 +1,7 @@
 package com.example.d_day_calculator.di
 
 import com.example.domain.repository.DayDataRepository
+import com.example.domain.usecase.GetAllDayUseCase
 import com.example.domain.usecase.InsertDayUseCase
 import dagger.Module
 import dagger.Provides
@@ -13,5 +14,9 @@ import javax.inject.Singleton
 class UseCaseModule {
     @Singleton
     @Provides
-    fun provideInsertDayUseCase(dayDataRepository: DayDataRepository) = InsertDayUseCase(dayDataRepository)
+    fun provideInsertDayUseCase(repository: DayDataRepository) = InsertDayUseCase(repository)
+
+    @Singleton
+    @Provides
+    fun provideGetAllDayUseCase(repository: DayDataRepository) = GetAllDayUseCase(repository)
 }

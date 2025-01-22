@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface DayDataSource {
     suspend fun insertDay(day: DayEntity): Flow<Int>
+    suspend fun getAllDay(): Flow<List<DayEntity>>
 }
