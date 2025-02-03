@@ -20,7 +20,7 @@ class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<D
 
     class DayViewHolder(private val binding: ItemDayBinding) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: DayModel) {
-            var day: Long = 0
+            var day = 0
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
             val endDay = dateFormat.parse(item.endDay)?.time
             val today = Calendar.getInstance().apply {
@@ -30,13 +30,13 @@ class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<D
             }.time.time
 
             endDay?.let {
-                day = ((today - endDay) / (60 * 60 * 24 * 1000))
+                day = ((today - endDay) / (60 * 60 * 24 * 1000)).toInt()
             }
 
             binding.run {
                 titleTxt.text = item.title
                 insertDayTxt.text = item.startDay
-                dayTxt.text = if (day > 0) "+$day" else day.toString()
+                dayTxt.text =  if (day > 0) "D+$day" else if(day == 0) "D+0" else "D" + day.toString()
             }
         }
     }
