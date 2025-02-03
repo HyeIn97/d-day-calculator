@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.DayModel
 import com.example.presentation.databinding.ActivityMainBinding
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.days.collect {
                     it?.let {
                         if (it.isEmpty()) {
+                            binding.topImg.visibility = View.GONE
                             binding.dDayRv.visibility = View.GONE
                             binding.emptyTxt.visibility = View.VISIBLE
                         } else {
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                             days.addAll(it)
                             dayAdapter.notifyItemRangeChanged(0, it.size)
                             binding.emptyTxt.visibility = View.GONE
+                            binding.topImg.visibility = View.VISIBLE
                             binding.dDayRv.visibility = View.VISIBLE
                         }
                     }
@@ -60,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initAdapter() = with(binding) {
         dDayRv.apply {
+            addItemDecoration(DividerItemDecoration(this@MainActivity, LinearLayoutManager.VERTICAL))
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = dayAdapter
         }
