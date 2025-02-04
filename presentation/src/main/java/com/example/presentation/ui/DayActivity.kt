@@ -3,12 +3,14 @@ package com.example.presentation.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.DayModel
+import com.example.presentation.R
 import com.example.presentation.databinding.ActivityDayBinding
 import com.example.presentation.service.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
@@ -51,15 +53,19 @@ class DayActivity : AppCompatActivity() {
     @SuppressLint("NewApi")
     private fun initListener() = with(binding) {
         saveBtn.setOnClickListener {
-            val startDay = if (!setting.isChecked) {
-                dateFormat.format(Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 1)
-                }.time)
+            if (titleEdt.text.toString().isBlank()) {
+                Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
             } else {
-                dateFormat.format(Calendar.getInstance().time)
+                val startDay = if (!setting.isChecked) {
+                    dateFormat.format(Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, 1)
+                    }.time)
+                } else {
+                    dateFormat.format(Calendar.getInstance().time)
+                }
+                val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
+                viewModel.insertDay(DayModel(titleEdt.text.toString(), startDay, endDay, widget.isChecked, setting.isChecked))
             }
-            val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-            viewModel.insertDay(DayModel(titleEdt.text.toString(), startDay, endDay, widget.isChecked, setting.isChecked))
         }
     }
 }

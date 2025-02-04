@@ -5,4 +5,5 @@
     <string name="title_hint">15자 이내로 제목을 입력하세요.</string>
     <string name="widget">위젯 설정</string>
     <string name="day_setting">1일 부터 시작</string>
+    <string name="empty_title">제목을 입력해주세요.</string>
 </resources>
