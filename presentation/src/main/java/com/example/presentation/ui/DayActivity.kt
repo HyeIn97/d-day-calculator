@@ -27,6 +27,7 @@ class DayActivity : AppCompatActivity() {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private var notificationID = 1001
     private val dayService: DayForegroundService? = null
+    private val numberRange = (0..99999)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +57,7 @@ class DayActivity : AppCompatActivity() {
             if (titleEdt.text.toString().isBlank()) {
                 Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
             } else {
-                val startDay = if (!setting.isChecked) {
+                val insertDay = if (!setting.isChecked) {
                     dateFormat.format(Calendar.getInstance().apply {
                         set(Calendar.HOUR_OF_DAY, 1)
                     }.time)
@@ -64,7 +65,7 @@ class DayActivity : AppCompatActivity() {
                     dateFormat.format(Calendar.getInstance().time)
                 }
                 val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                viewModel.insertDay(DayModel(titleEdt.text.toString(), startDay, endDay, widget.isChecked, setting.isChecked))
+                viewModel.insertDay(DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
             }
         }
     }

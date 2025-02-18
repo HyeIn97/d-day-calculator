@@ -35,7 +35,7 @@ class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<D
 
             binding.run {
                 titleTxt.text = item.title
-                insertDayTxt.text = item.startDay
+                insertDayTxt.text = item.insertDay
                 dayTxt.text =  if (day > 0) "D+$day" else if(day == 0) "D+0" else "D" + day.toString()
             }
         }

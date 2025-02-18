@@ -12,11 +12,11 @@ interface DayDao {
     @Insert
     fun insertDay(day: DayEntity): Long
 
-    @Query("SELECT * FROM days ORDER BY `key` DESC")
+    @Query("SELECT * FROM days ORDER BY `insert_day` DESC")
     fun getAllDay(): Flow<List<DayEntity>>
 
-    @Query("DELETE FROM days WHERE title = :title")
-    fun deleteDay(title: String)
+    @Query("DELETE FROM days WHERE `key` = :key")
+    fun deleteDay(key: Int)
 
     @Update
     fun updateDay(day: DayEntity)
