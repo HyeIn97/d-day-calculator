@@ -34,9 +34,14 @@ class MainActivity : AppCompatActivity() {
 
     private val dayAdapter by lazy {
         DayAdapter(days, object : ItemClickListener<DayModel> {
+            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
+                val bundle = Bundle().apply {
+                    putSerializable("data", data)
+                }
 
+                startActivity(Intent(this@MainActivity, DayActivity::class.java), bundle)
                 Toast.makeText(this@MainActivity, "설정 클릭", Toast.LENGTH_SHORT).show()
             }
 
