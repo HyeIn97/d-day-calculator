@@ -25,8 +25,6 @@ class DayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDayBinding
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-    private var notificationID = 1001
-    private val dayService: DayForegroundService? = null
     private val numberRange = (0..99999)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,6 @@ class DayActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NewApi")
     private fun initListener() = with(binding) {
         saveBtn.setOnClickListener {
             if (titleEdt.text.toString().isBlank()) {
