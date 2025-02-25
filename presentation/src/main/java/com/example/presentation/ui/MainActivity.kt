@@ -38,11 +38,12 @@ class MainActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
-                val bundle = Bundle().apply {
-                    putSerializable("data", data)
+                
+                val intent = Intent(this@MainActivity, DayActivity::class.java).apply {
+                    putExtra("data", data)
                 }
 
-                startActivity(Intent(this@MainActivity, DayActivity::class.java), bundle)
+                startActivity(intent)
             }
 
             override fun itemDeleteClick(data: DayModel) {
