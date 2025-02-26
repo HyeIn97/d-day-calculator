@@ -1,10 +1,13 @@
 package com.example.presentation.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,9 +16,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.DayModel
+import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityMainBinding
 import com.example.presentation.ui.adapter.DayAdapter
 import com.example.presentation.ui.helper.SwipeHelper
+import com.example.presentation.util.ItemClickListener
 import com.example.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,10 +30,31 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private val days = arrayListOf<DayModel>()
+    private val swipeHelper = SwipeHelper()
+    private var dialogFragment: CustomDialog? = null
+
     private val dayAdapter by lazy {
-        DayAdapter(days)
+        DayAdapter(days, object : ItemClickListener<DayModel> {
+            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
+            override fun itemSettingClick(data: DayModel) {
+                super.itemSettingClick(data)
+                
+                val intent = Intent(this@MainActivity, DayActivity::class.java).apply {
+                    putExtra("data", data)
+                }
+
+                startActivity(intent)
+            }
+
+            override fun itemDeleteClick(data: DayModel) {
+                super.itemDeleteClick(data)
+
+                CustomDialog().show(supportFragmentManager, "deleteDialog")
+            }
+        })
     }
 
+    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this), null, false)
@@ -69,14 +95,20 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
             adapter = dayAdapter
 
-            val test = SwipeHelper(dayAdapter)
-            ItemTouchHelper(test).attachToRecyclerView(dDayRv)
+            ItemTouchHelper(swipeHelper).attachToRecyclerView(dDayRv)
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     private fun initListener() = with(binding) {
         addBtn.setOnClickListener {
             startActivity(Intent(this@MainActivity, DayActivity::class.java))
+        }
+
+        dDayRv.setOnTouchListener { view, motionEvent ->
+            swipeHelper.removePreviousClamp(dDayRv)
+            false
         }
     }
 }

@@ -5,12 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.DayModel
 import com.example.presentation.databinding.ItemDayBinding
+import com.example.presentation.util.ItemClickListener
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DayViewHolder(ItemDayBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+class DayAdapter(
+    private val days: ArrayList<DayModel>,
+    private val onClick: ItemClickListener<DayModel>
+) : RecyclerView.Adapter<DayAdapter.DayViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        DayViewHolder(ItemDayBinding.inflate(LayoutInflater.from(parent.context), parent, false), onClick)
 
     override fun getItemCount() = days.size
 
@@ -18,7 +23,10 @@ class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<D
         holder.onBind(days[position])
     }
 
-    class DayViewHolder(private val binding: ItemDayBinding) : RecyclerView.ViewHolder(binding.root) {
+    class DayViewHolder(
+        private val binding: ItemDayBinding,
+        private val onClick: ItemClickListener<DayModel>
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: DayModel) {
             var day = 0
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
@@ -35,8 +43,16 @@ class DayAdapter(private val days: ArrayList<DayModel>) : RecyclerView.Adapter<D
 
             binding.run {
                 titleTxt.text = item.title
-                insertDayTxt.text = item.startDay
-                dayTxt.text =  if (day > 0) "D+$day" else if(day == 0) "D+0" else "D" + day.toString()
+                insertDayTxt.text = item.insertDay
+                dayTxt.text = if (day > 0) "D+$day" else if (day == 0) "D+0" else "D" + day.toString()
+            }
+
+            binding.settingBtn.setOnClickListener {
+                onClick.itemSettingClick(item)
+            }
+
+            binding.deleteBtn.setOnClickListener {
+                onClick.itemDeleteClick(item)
             }
         }
     }

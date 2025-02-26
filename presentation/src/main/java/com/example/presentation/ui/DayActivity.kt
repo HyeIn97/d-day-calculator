@@ -1,10 +1,11 @@
 package com.example.presentation.ui
 
-import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.DayModel
 import com.example.presentation.R
 import com.example.presentation.databinding.ActivityDayBinding
-import com.example.presentation.service.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,16 +25,23 @@ class DayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDayBinding
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-    private var notificationID = 1001
-    private val dayService: DayForegroundService? = null
+    private val numberRange = (0..99999)
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val updateDay = intent.getSerializableExtra("data", DayModel::class.java)
 
         binding = ActivityDayBinding.inflate(LayoutInflater.from(this), null, false)
         setContentView(binding.root)
 
-        initListener()
+        updateDay?.let {
+            initUpdateView(it)
+            initUpdateListener()
+        } ?: run {
+            initInsertListener()
+        }
         lifecycleScope()
     }
 
@@ -50,13 +57,12 @@ class DayActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NewApi")
-    private fun initListener() = with(binding) {
+    private fun initInsertListener() = with(binding) {
         saveBtn.setOnClickListener {
             if (titleEdt.text.toString().isBlank()) {
                 Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
             } else {
-                val startDay = if (!setting.isChecked) {
+                val insertDay = if (!setting.isChecked) {
                     dateFormat.format(Calendar.getInstance().apply {
                         set(Calendar.HOUR_OF_DAY, 1)
                     }.time)
@@ -64,8 +70,20 @@ class DayActivity : AppCompatActivity() {
                     dateFormat.format(Calendar.getInstance().time)
                 }
                 val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                viewModel.insertDay(DayModel(titleEdt.text.toString(), startDay, endDay, widget.isChecked, setting.isChecked))
+                viewModel.insertDay(DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
             }
         }
+    }
+
+    private fun initUpdateView(dayItem: DayModel) = with(binding) {
+        titleEdt.setText(dayItem.title)
+        val selectDay = dayItem.endDay.split("-")
+        daySpinner.updateDate(selectDay[0].toInt(), selectDay[1].toInt(), selectDay[2].toInt())
+        widget.isChecked = dayItem.isWidget
+        setting.isChecked = dayItem.isInclude
+    }
+
+    private fun initUpdateListener() = with(binding) {
+
     }
 }

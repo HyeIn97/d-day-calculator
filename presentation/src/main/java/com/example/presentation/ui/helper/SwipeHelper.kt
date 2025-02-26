@@ -3,6 +3,7 @@ package com.example.presentation.ui.helper
 import android.graphics.Canvas
 import android.os.Build
 import android.view.View
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
@@ -10,11 +11,10 @@ import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.presentation.R
-import com.example.presentation.ui.adapter.DayAdapter
 import kotlin.math.max
 import kotlin.math.min
 
-class SwipeHelper(private val adapter: DayAdapter) : ItemTouchHelper.Callback() {
+class SwipeHelper() : ItemTouchHelper.Callback() {
     private var currentPosition: Int? = null
     private var previousPosition: Int? = null
     private var currentDx = 0f
@@ -28,11 +28,19 @@ class SwipeHelper(private val adapter: DayAdapter) : ItemTouchHelper.Callback() 
         return false
     }
 
-    override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-//        adapter.notifyItemRemoved(viewHolder.adapterPosition)
-    }
+    override fun onSwiped(viewHolder: ViewHolder, direction: Int) {}
 
+    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
+        val isClamped = getTag(viewHolder)
+
+        if (isClamped) {
+            getView(viewHolder).translationX = -clamp
+        } else {
+            getView(viewHolder).translationX = 0f
+            removePreviousClamp(recyclerView)
+        }
+
         currentDx = 0f
         previousPosition = viewHolder.adapterPosition
         getDefaultUIUtil().clearView(getView(viewHolder))
@@ -49,7 +57,7 @@ class SwipeHelper(private val adapter: DayAdapter) : ItemTouchHelper.Callback() 
         val isClamped = getTag(viewHolder)
         setTag(viewHolder, !isClamped && currentDx <= -clamp)
 
-        return 2f
+        return 1f
     }
 
     override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -59,8 +67,11 @@ class SwipeHelper(private val adapter: DayAdapter) : ItemTouchHelper.Callback() 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         if (actionState == ACTION_STATE_SWIPE) {
             val view = getView(viewHolder)
+            val menuView = viewHolder.itemView.findViewById<LinearLayout>(R.id.menu_layout)
+            setClamp(menuView.width.toFloat())
+
             val isClamped = getTag(viewHolder)
-            val x = clampViewPositionHorizontal(view, dX, isClamped, isCurrentlyActive)
+            val x = clampViewPositionHorizontal(view, dX, isClamped, isCurrentlyActive, viewHolder)
             currentDx = x
 
             getDefaultUIUtil().onDraw(
@@ -69,8 +80,9 @@ class SwipeHelper(private val adapter: DayAdapter) : ItemTouchHelper.Callback() 
         }
     }
 
-    private fun clampViewPositionHorizontal(view: View, dX: Float, isClamped: Boolean, isCurrentlyActive: Boolean): Float {
-        val min = -view.width.toFloat() / 2
+    private fun clampViewPositionHorizontal(view: View, dX: Float, isClamped: Boolean, isCurrentlyActive: Boolean, viewHolder: ViewHolder): Float {
+        val menuView = viewHolder.itemView.findViewById<LinearLayout>(R.id.menu_layout)
+        val min = -menuView.width.toFloat()
         val max = 0f
         val x = if (isClamped) {
             if (isCurrentlyActive) dX - clamp else -clamp
