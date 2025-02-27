@@ -16,7 +16,7 @@ interface DayDao {
     fun getAllDay(): Flow<List<DayEntity>>
 
     @Query("DELETE FROM days WHERE `key` = :key")
-    fun deleteDay(key: Int)
+    fun deleteDay(key: Int): Int
 
     @Update
     fun updateDay(day: DayEntity)

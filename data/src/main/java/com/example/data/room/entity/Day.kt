@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "days")
 data class DayEntity(
-    @PrimaryKey @ColumnInfo(name = "key") val key: Int = 0,
+    @PrimaryKey @ColumnInfo(name = "key") val key: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "insert_day") val insertDay: String,
     @ColumnInfo(name = "end_day") val endDay: String,

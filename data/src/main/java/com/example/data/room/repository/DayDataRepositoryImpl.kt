@@ -26,4 +26,10 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
             emit(list)
         }
     }
+
+    override suspend fun deleteDay(key: Int): Flow<Int> = flow {
+        dataSource.deleteDay(key).collect {
+            emit(it)
+        }
+    }
 }
