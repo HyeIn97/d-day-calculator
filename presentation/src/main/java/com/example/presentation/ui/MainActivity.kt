@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             launch {
                 viewModel.days.collect {
                     it?.let {
+                        days.clear()
                         if (it.isEmpty()) {
                             binding.topImg.visibility = View.GONE
                             binding.dDayRv.visibility = View.GONE
