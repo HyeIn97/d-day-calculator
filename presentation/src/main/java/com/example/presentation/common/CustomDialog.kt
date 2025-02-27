@@ -13,8 +13,10 @@ class CustomDialog : DialogFragment() {
     private lateinit var binding: UiDialogBinding
     private var title = ""
     private var content = ""
-    private var noneEvent: ((View) -> Unit)? = null
-    private var checkEvent: ((View) -> Unit)? = null
+    private var positive = ""
+    private var negative = ""
+    private var negativeEvent: ((View) -> Unit)? = null
+    private var positiveEvent: ((View) -> Unit)? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = UiDialogBinding.inflate(inflater, container, false)
@@ -30,23 +32,33 @@ class CustomDialog : DialogFragment() {
     }
 
     inner class Builder {
-        fun setTitle(title: String): Builder {
+        fun setTitleTxt(title: String): Builder {
             this@CustomDialog.title = title
             return this
         }
 
-        fun setContent(content: String): Builder {
+        fun setContentTxt(content: String): Builder {
             this@CustomDialog.content = content
             return this
         }
 
-        fun setNoneListener(onNoneListener: (View) -> Unit): Builder {
-            this@CustomDialog.noneEvent = onNoneListener
+        fun setPositiveTxt(positive: String): Builder {
+            this@CustomDialog.positive = positive
             return this
         }
 
-        fun setCheckListener(onCheckListener: (View) -> Unit): Builder {
-            this@CustomDialog.checkEvent = onCheckListener
+        fun setNegativeTxt(negative: String): Builder {
+            this@CustomDialog.negative = negative
+            return this
+        }
+
+        fun setNegativeListener(onNegativeListener: (View) -> Unit): Builder {
+            this@CustomDialog.negativeEvent = onNegativeListener
+            return this
+        }
+
+        fun setPositiveListener(onPositiveListener: (View) -> Unit): Builder {
+            this@CustomDialog.positiveEvent = onPositiveListener
             return this
         }
 
@@ -58,16 +70,18 @@ class CustomDialog : DialogFragment() {
     private fun initView() = with(binding) {
         titleTxt.text = title
         contentTxt.text = content
+        positiveBtn.text = positive
+        negativeBtn.text = negative
     }
 
     private fun initListener() = with(binding) {
-        noneBtn.setOnClickListener {
-            noneEvent?.invoke(it)
+        negativeBtn.setOnClickListener {
+            negativeEvent?.invoke(it)
             this@CustomDialog.dismiss()
         }
 
-        checkBtn.setOnClickListener {
-            checkEvent?.invoke(it)
+        positiveBtn.setOnClickListener {
+            positiveEvent?.invoke(it)
             this@CustomDialog.dismiss()
         }
     }

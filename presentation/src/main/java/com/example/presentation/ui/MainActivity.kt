@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
-                
+
                 val intent = Intent(this@MainActivity, DayActivity::class.java).apply {
                     putExtra("data", data)
                 }
@@ -51,10 +50,12 @@ class MainActivity : AppCompatActivity() {
                 super.itemDeleteClick(data)
 
                 CustomDialog().Builder().apply {
-                    setTitle(getString(R.string.dialog_title))
-                    setContent(getString(R.string.dialog_content))
-                    setCheckListener {
-
+                    setTitleTxt(getString(R.string.dialog_title))
+                    setContentTxt(getString(R.string.dialog_content))
+                    setPositiveTxt(getString(R.string.positive))
+                    setNegativeTxt(getString(R.string.negative))
+                    setPositiveListener {
+                        viewModel.deleteDay(data.key)
                     }
                 }.show(supportFragmentManager, "deleteDialog")
             }
