@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.DayModel
+import com.example.presentation.R
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityMainBinding
 import com.example.presentation.ui.adapter.DayAdapter
@@ -31,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val days = arrayListOf<DayModel>()
     private val swipeHelper = SwipeHelper()
-    private var dialogFragment: CustomDialog? = null
 
     private val dayAdapter by lazy {
         DayAdapter(days, object : ItemClickListener<DayModel> {
@@ -49,7 +50,13 @@ class MainActivity : AppCompatActivity() {
             override fun itemDeleteClick(data: DayModel) {
                 super.itemDeleteClick(data)
 
-                CustomDialog().show(supportFragmentManager, "deleteDialog")
+                CustomDialog().Builder().apply {
+                    setTitle(getString(R.string.dialog_title))
+                    setContent(getString(R.string.dialog_content))
+                    setCheckListener {
+
+                    }
+                }.show(supportFragmentManager, "deleteDialog")
             }
         })
     }

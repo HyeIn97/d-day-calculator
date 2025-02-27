@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.example.presentation.R
 import com.example.presentation.databinding.UiDialogBinding
 
@@ -23,6 +24,9 @@ class CustomDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initView()
+        initListener()
     }
 
     inner class Builder {
@@ -44,6 +48,27 @@ class CustomDialog : DialogFragment() {
         fun setCheckListener(onCheckListener: (View) -> Unit): Builder {
             this@CustomDialog.checkEvent = onCheckListener
             return this
+        }
+
+        fun show(fragmentManager: FragmentManager, tag: String) {
+            this@CustomDialog.show(fragmentManager, tag)
+        }
+    }
+
+    private fun initView() = with(binding) {
+        titleTxt.text = title
+        contentTxt.text = content
+    }
+
+    private fun initListener() = with(binding) {
+        noneBtn.setOnClickListener {
+            noneEvent?.invoke(it)
+            this@CustomDialog.dismiss()
+        }
+
+        checkBtn.setOnClickListener {
+            checkEvent?.invoke(it)
+            this@CustomDialog.dismiss()
         }
     }
 }
