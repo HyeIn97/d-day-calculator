@@ -18,9 +18,12 @@ class CustomDialog : DialogFragment() {
     private var negativeEvent: ((View) -> Unit)? = null
     private var positiveEvent: ((View) -> Unit)? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.custom_dialog)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = UiDialogBinding.inflate(inflater, container, false)
-        setStyle(STYLE_NO_TITLE, R.style.custom_dialog)
         return binding.root
     }
 
