@@ -32,4 +32,11 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
             emit(it)
         }
     }
+
+    override suspend fun updateDay(day: DayModel): Flow<Int> = flow {
+        val dayEntity = DayEntity(day.key, day.title, day.insertDay, day.endDay, day.isWidget, day.isInclude)
+        dataSource.updateDay(dayEntity).collect {
+            emit(it)
+        }
+    }
 }

@@ -32,7 +32,16 @@ class DayDataSourceImpl @Inject constructor(private val dao: DayDao) : DayDataSo
     override suspend fun deleteDay(key: Int): Flow<Int> = callbackFlow {
         job.launch {
             val success = dao.deleteDay(key)
-            trySend(success.toInt())
+            trySend(success)
+        }
+
+        awaitClose()
+    }
+
+    override suspend fun updateDay(day: DayEntity): Flow<Int> = callbackFlow {
+        job.launch {
+            val success = dao.updateDay(day)
+            trySend(1)
         }
 
         awaitClose()
