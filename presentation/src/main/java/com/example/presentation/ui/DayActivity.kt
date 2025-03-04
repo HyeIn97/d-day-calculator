@@ -38,7 +38,7 @@ class DayActivity : AppCompatActivity() {
 
         updateDay?.let {
             initUpdateView(it)
-            initUpdateListener()
+            initUpdateListener(it.key)
         } ?: run {
             initInsertListener()
         }
@@ -49,9 +49,13 @@ class DayActivity : AppCompatActivity() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 viewModel.insertDay.collect {
-                    it?.let {
-                        finish()
-                    }
+                    finish()
+                }
+            }
+
+            launch {
+                viewModel.updateDay.collect {
+                    finish()
                 }
             }
         }
@@ -83,7 +87,19 @@ class DayActivity : AppCompatActivity() {
         setting.isChecked = dayItem.isInclude
     }
 
-    private fun initUpdateListener() = with(binding) {
-
+    private fun initUpdateListener(key: Int) = with(binding) {
+        if (titleEdt.text.toString().isBlank()) {
+            Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+        } else {
+            val insertDay = if (!setting.isChecked) {
+                dateFormat.format(Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, 1)
+                }.time)
+            } else {
+                dateFormat.format(Calendar.getInstance().time)
+            }
+            val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
+            viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
+        }
     }
 }
