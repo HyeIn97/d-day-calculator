@@ -23,4 +23,7 @@ interface DayDao {
 
     @Query("SELECT * FROM days WHERE `is_notification` = :isNotification")
     fun getNotificationCount(isNotification: Boolean): Int
+
+    @Query("SELECT * FROM days WHERE `is_notification` = :isNotification")
+    fun getNotificationDay(isNotification: Boolean): Flow<List<DayEntity>>
 }

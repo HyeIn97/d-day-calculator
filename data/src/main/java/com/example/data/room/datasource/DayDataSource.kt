@@ -9,4 +9,5 @@ interface DayDataSource {
     suspend fun deleteDay(key: Int): Flow<Int>
     suspend fun updateDay(day: DayEntity): Flow<Int>
     suspend fun getNotificationCount(): Flow<Int>
+    suspend fun getNotificationDay(): Flow<List<DayEntity>>
 }

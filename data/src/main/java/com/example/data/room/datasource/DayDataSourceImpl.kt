@@ -55,4 +55,10 @@ class DayDataSourceImpl @Inject constructor(private val dao: DayDao) : DayDataSo
 
         awaitClose()
     }
+
+    override suspend fun getNotificationDay(): Flow<List<DayEntity>> = flow {
+        dao.getNotificationDay(true).collect {
+            emit(it)
+        }
+    }
 }

@@ -40,9 +40,21 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
         }
     }
 
-    override suspend fun getNotificationCount(): Flow<Int>  = flow {
-        dataSource.getNotificationCount().collect{
+    override suspend fun getNotificationCount(): Flow<Int> = flow {
+        dataSource.getNotificationCount().collect {
             emit(it)
+        }
+    }
+
+    override suspend fun getNotificationDay(): Flow<List<DayModel>> = flow {
+        dataSource.getNotificationDay().collect { days ->
+            val list = arrayListOf<DayModel>()
+
+            days.map { day ->
+                list.add(DayModel(day.key, day.title, day.insertDay, day.endDay, day.isNotification, day.isInclude))
+            }
+
+            emit(list)
         }
     }
 }

@@ -28,4 +28,7 @@ class UseCaseModule {
 
     @Provides
     fun provideNotificationCountUseCase(repository: DayDataRepository) = GetNotificationCountUseCase(repository)
+
+    @Provides
+    fun provideNotificationDayUseCase(repository: DayDataRepository) = GetNotificationCountUseCase(repository)
 }
