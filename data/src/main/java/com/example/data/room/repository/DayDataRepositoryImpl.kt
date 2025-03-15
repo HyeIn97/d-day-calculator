@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataSource) : DayDataRepository {
     override suspend fun insertDay(day: DayModel): Int {
-        val success = dataSource.insertDay(DayEntity(day.key, day.title, day.insertDay, day.endDay, day.isWidget, day.isInclude)).first()
+        val success = dataSource.insertDay(DayEntity(day.key, day.title, day.insertDay, day.endDay, day.isNotification, day.isInclude)).first()
         return success
     }
 
@@ -20,7 +20,7 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
             val list = arrayListOf<DayModel>()
 
             days.map { day ->
-                list.add(DayModel(day.key, day.title, day.insertDay, day.endDay, day.widget, day.isInclude))
+                list.add(DayModel(day.key, day.title, day.insertDay, day.endDay, day.isNotification, day.isInclude))
             }
 
             emit(list)
@@ -34,8 +34,14 @@ class DayDataRepositoryImpl @Inject constructor(private val dataSource: DayDataS
     }
 
     override suspend fun updateDay(day: DayModel): Flow<Int> = flow {
-        val dayEntity = DayEntity(day.key, day.title, day.insertDay, day.endDay, day.isWidget, day.isInclude)
+        val dayEntity = DayEntity(day.key, day.title, day.insertDay, day.endDay, day.isNotification, day.isInclude)
         dataSource.updateDay(dayEntity).collect {
+            emit(it)
+        }
+    }
+
+    override suspend fun getNotificationCount(): Flow<Int>  = flow {
+        dataSource.getNotificationCount().collect{
             emit(it)
         }
     }

@@ -10,6 +10,6 @@ data class DayEntity(
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "insert_day") val insertDay: String,
     @ColumnInfo(name = "end_day") val endDay: String,
-    @ColumnInfo(name = "widget") val widget: Boolean,
+    @ColumnInfo(name = "is_notification") val isNotification: Boolean,
     @ColumnInfo(name = "is_include") val isInclude: Boolean
 )

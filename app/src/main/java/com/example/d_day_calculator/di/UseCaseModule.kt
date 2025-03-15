@@ -3,6 +3,7 @@ package com.example.d_day_calculator.di
 import com.example.domain.repository.DayDataRepository
 import com.example.domain.usecase.DeleteDayUseCase
 import com.example.domain.usecase.GetAllDayUseCase
+import com.example.domain.usecase.GetNotificationCountUseCase
 import com.example.domain.usecase.InsertDayUseCase
 import com.example.domain.usecase.UpdateDayUseCase
 import dagger.Module
@@ -24,4 +25,7 @@ class UseCaseModule {
 
     @Provides
     fun provideUpdateDayUseCase(repository: DayDataRepository) = UpdateDayUseCase(repository)
+
+    @Provides
+    fun provideNotificationCountUseCase(repository: DayDataRepository) = GetNotificationCountUseCase(repository)
 }

@@ -7,6 +7,6 @@ data class DayModel(
     val title: String,
     val insertDay: String,
     val endDay: String,
-    val isWidget: Boolean,
+    val isNotification: Boolean,
     val isInclude: Boolean
 ): Serializable

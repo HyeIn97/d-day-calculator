@@ -46,4 +46,13 @@ class DayDataSourceImpl @Inject constructor(private val dao: DayDao) : DayDataSo
 
         awaitClose()
     }
+
+    override suspend fun getNotificationCount(): Flow<Int> = callbackFlow {
+        job.launch {
+            val count = dao.getNotificationCount(true)
+            trySend(count)
+        }
+
+        awaitClose()
+    }
 }

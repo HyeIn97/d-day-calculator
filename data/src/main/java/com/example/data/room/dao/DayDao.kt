@@ -20,4 +20,7 @@ interface DayDao {
 
     @Update
     fun updateDay(day: DayEntity)
+
+    @Query("DELETE FROM days WHERE `is_notification` = :isNotification")
+    fun getNotificationCount(isNotification: Boolean): Int
 }
