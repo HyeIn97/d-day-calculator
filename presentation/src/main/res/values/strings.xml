@@ -3,11 +3,13 @@
     <string name="d_day">D-Day</string>
     <string name="empty">디데이를 설정하세요.</string>
     <string name="title_hint">15자 이내로 제목을 입력하세요.</string>
-    <string name="widget">위젯 설정</string>
+    <string name="notification">알림창 표기</string>
     <string name="day_setting">1일 부터 시작</string>
     <string name="empty_title">제목을 입력해주세요.</string>
     <string name="dialog_title">삭제하시겠습니까?</string>
     <string name="dialog_content">삭제하시면 복구가 불가능합니다.\n정말로 삭제하시겠습니까 ?</string>
     <string name="negative">아니요</string>
     <string name="positive">네</string>
+    <string name="impossibility_content">알림창 표기는 최대 3개까지만 가능합니다.\n기존 알림을 제거 해주세요.</string>
+    <string name="done">확인</string>
 </resources>

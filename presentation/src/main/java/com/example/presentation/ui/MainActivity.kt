@@ -2,12 +2,10 @@ package com.example.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -35,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private val dayAdapter by lazy {
         DayAdapter(days, object : ItemClickListener<DayModel> {
-            @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
 
@@ -50,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 super.itemDeleteClick(data)
 
                 CustomDialog().Builder().apply {
+                    setIsSingleBtn(false)
                     setTitleTxt(getString(R.string.dialog_title))
                     setContentTxt(getString(R.string.dialog_content))
                     setPositiveTxt(getString(R.string.positive))
@@ -62,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this), null, false)

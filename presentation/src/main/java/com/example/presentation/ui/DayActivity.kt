@@ -1,17 +1,16 @@
 package com.example.presentation.ui
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.DayModel
 import com.example.presentation.R
+import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +40,8 @@ class DayActivity : AppCompatActivity() {
         } ?: run {
             initInsertListener()
         }
+
+        viewModel.getNotificationCount()
         lifecycleScope()
     }
 
@@ -48,32 +49,47 @@ class DayActivity : AppCompatActivity() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 viewModel.insertDay.collect {
-                    finish()
+                    it?.let {
+                        finish()
+                    }
                 }
             }
 
             launch {
                 viewModel.updateDay.collect {
-                    finish()
+                    it?.let {
+                        finish()
+                    }
                 }
             }
         }
     }
 
     private fun initInsertListener() = with(binding) {
+        notification.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (!viewModel.isNotificationPossible && isChecked) {
+                compoundButton.isChecked = false
+                impossibilityDialog()
+            }
+        }
+
         saveBtn.setOnClickListener {
-            if (titleEdt.text.toString().isBlank()) {
-                Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
-            } else {
-                val insertDay = if (!setting.isChecked) {
-                    dateFormat.format(Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 1)
-                    }.time)
+            if (viewModel.isNotificationPossible) {
+                if (titleEdt.text.toString().isBlank()) {
+                    Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
                 } else {
-                    dateFormat.format(Calendar.getInstance().time)
+                    val insertDay = if (!setting.isChecked) {
+                        dateFormat.format(Calendar.getInstance().apply {
+                            set(Calendar.HOUR_OF_DAY, 1)
+                        }.time)
+                    } else {
+                        dateFormat.format(Calendar.getInstance().time)
+                    }
+                    val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
+                    viewModel.insertDay(DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked))
                 }
-                val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                viewModel.insertDay(DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
+            } else {
+                impossibilityDialog()
             }
         }
     }
@@ -82,25 +98,35 @@ class DayActivity : AppCompatActivity() {
         titleEdt.setText(dayItem.title)
         val selectDay = dayItem.endDay.split("-")
         daySpinner.updateDate(selectDay[0].toInt(), (selectDay[1].toInt()) - 1, selectDay[2].toInt())
-        widget.isChecked = dayItem.isWidget
+        notification.isChecked = dayItem.isNotification
         setting.isChecked = dayItem.isInclude
     }
 
     private fun initUpdateListener(key: Int) = with(binding) {
         saveBtn.setOnClickListener {
-            if (titleEdt.text.toString().isBlank()) {
-                Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
-            } else {
-                val insertDay = if (!setting.isChecked) {
-                    dateFormat.format(Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 1)
-                    }.time)
+            if (viewModel.isNotificationPossible) {
+                if (titleEdt.text.toString().isBlank()) {
+                    Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
                 } else {
-                    dateFormat.format(Calendar.getInstance().time)
+                    val insertDay = if (!setting.isChecked) {
+                        dateFormat.format(Calendar.getInstance().apply {
+                            set(Calendar.HOUR_OF_DAY, 1)
+                        }.time)
+                    } else {
+                        dateFormat.format(Calendar.getInstance().time)
+                    }
+                    val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
+                    viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked))
                 }
-                val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
+            } else {
+                impossibilityDialog()
             }
         }
     }
+
+    private fun impossibilityDialog() = CustomDialog().Builder().apply {
+        setIsSingleBtn(true)
+        setContentTxt(getString(R.string.impossibility_content))
+        setPositiveTxt(getString(R.string.done))
+    }.show(supportFragmentManager, "deleteDialog")
 }

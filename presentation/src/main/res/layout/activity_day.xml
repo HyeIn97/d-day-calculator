@@ -46,11 +46,11 @@
         app:layout_constraintTop_toBottomOf="@id/title_edt" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/widget_txt"
+        android:id="@+id/notification_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="@string/widget"
+        android:text="@string/notification"
         android:textColor="@color/eggshell"
         android:textSize="15sp"
         android:textStyle="normal"
@@ -58,12 +58,12 @@
         app:layout_constraintTop_toBottomOf="@id/day_spinner" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/widget"
+        android:id="@+id/notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/widget_txt"
+        app:layout_constraintBottom_toBottomOf="@id/notification_txt"
         app:layout_constraintEnd_toEndOf="@id/day_spinner"
-        app:layout_constraintTop_toTopOf="@id/widget_txt" />
+        app:layout_constraintTop_toTopOf="@id/notification_txt" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/day_setting_txt"
@@ -75,7 +75,7 @@
         android:textSize="15sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@id/day_spinner"
-        app:layout_constraintTop_toBottomOf="@id/widget_txt" />
+        app:layout_constraintTop_toBottomOf="@id/notification_txt" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/setting"
