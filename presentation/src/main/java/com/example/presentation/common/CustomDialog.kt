@@ -11,6 +11,7 @@ import com.example.presentation.databinding.UiDialogBinding
 
 class CustomDialog : DialogFragment() {
     private lateinit var binding: UiDialogBinding
+    private var isSingleBtn = true
     private var title = ""
     private var content = ""
     private var positive = ""
@@ -22,6 +23,7 @@ class CustomDialog : DialogFragment() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.custom_dialog)
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = UiDialogBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,6 +37,11 @@ class CustomDialog : DialogFragment() {
     }
 
     inner class Builder {
+        fun setIsSingleBtn(isSingleBtn: Boolean): Builder {
+            this@CustomDialog.isSingleBtn = isSingleBtn
+            return this
+        }
+
         fun setTitleTxt(title: String): Builder {
             this@CustomDialog.title = title
             return this
@@ -71,10 +78,27 @@ class CustomDialog : DialogFragment() {
     }
 
     private fun initView() = with(binding) {
-        titleTxt.text = title
-        contentTxt.text = content
+        if (title.isNotBlank()) {
+            titleTxt.visibility = View.VISIBLE
+            titleTxt.text = title
+        } else {
+            titleTxt.visibility = View.GONE
+        }
+
+        if (content.isNotBlank()) {
+            contentTxt.visibility = View.VISIBLE
+            contentTxt.text = content
+        } else {
+            contentTxt.visibility = View.GONE
+        }
+
         positiveBtn.text = positive
-        negativeBtn.text = negative
+        if (isSingleBtn) {
+            negativeBtn.visibility = View.GONE
+        } else {
+            negativeBtn.visibility = View.VISIBLE
+            negativeBtn.text = negative
+        }
     }
 
     private fun initListener() = with(binding) {
