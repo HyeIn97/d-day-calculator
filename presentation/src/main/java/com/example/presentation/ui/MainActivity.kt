@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     private fun initListener() = with(binding) {
         addBtn.setOnClickListener {
             startActivity(Intent(this@MainActivity, DayActivity::class.java))

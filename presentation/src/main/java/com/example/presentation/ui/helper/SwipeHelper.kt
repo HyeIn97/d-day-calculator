@@ -30,7 +30,6 @@ class SwipeHelper() : ItemTouchHelper.Callback() {
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {}
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
         val isClamped = getTag(viewHolder)
 
@@ -105,7 +104,6 @@ class SwipeHelper() : ItemTouchHelper.Callback() {
         this.clamp = clamp
     }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
     fun removePreviousClamp(recyclerView: RecyclerView) {
         if (currentPosition == previousPosition) return
 
