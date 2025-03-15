@@ -4,6 +4,7 @@ import com.example.domain.repository.DayDataRepository
 import com.example.domain.usecase.DeleteDayUseCase
 import com.example.domain.usecase.GetAllDayUseCase
 import com.example.domain.usecase.InsertDayUseCase
+import com.example.domain.usecase.UpdateDayUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +21,7 @@ class UseCaseModule {
 
     @Provides
     fun provideDeleteDayUseCase(repository: DayDataRepository) = DeleteDayUseCase(repository)
+
+    @Provides
+    fun provideUpdateDayUseCase(repository: DayDataRepository) = UpdateDayUseCase(repository)
 }

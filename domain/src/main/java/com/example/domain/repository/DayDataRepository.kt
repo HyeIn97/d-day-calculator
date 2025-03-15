@@ -7,4 +7,5 @@ interface DayDataRepository {
     suspend fun insertDay(day: DayModel): Int
     suspend fun getAllDay(): Flow<ArrayList<DayModel>>
     suspend fun deleteDay(key: Int): Flow<Int>
+    suspend fun updateDay(day: DayModel): Flow<Int>
 }

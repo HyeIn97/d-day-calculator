@@ -7,4 +7,5 @@ interface DayDataSource {
     suspend fun insertDay(day: DayEntity): Flow<Int>
     suspend fun getAllDay(): Flow<List<DayEntity>>
     suspend fun deleteDay(key:Int): Flow<Int>
+    suspend fun updateDay(day: DayEntity) : Flow<Int>
 }
