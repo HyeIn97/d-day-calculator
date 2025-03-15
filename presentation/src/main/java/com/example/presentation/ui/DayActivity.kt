@@ -82,24 +82,26 @@ class DayActivity : AppCompatActivity() {
     private fun initUpdateView(dayItem: DayModel) = with(binding) {
         titleEdt.setText(dayItem.title)
         val selectDay = dayItem.endDay.split("-")
-        daySpinner.updateDate(selectDay[0].toInt(), selectDay[1].toInt(), selectDay[2].toInt())
+        daySpinner.updateDate(selectDay[0].toInt(), (selectDay[1].toInt()) - 1, selectDay[2].toInt())
         widget.isChecked = dayItem.isWidget
         setting.isChecked = dayItem.isInclude
     }
 
     private fun initUpdateListener(key: Int) = with(binding) {
-        if (titleEdt.text.toString().isBlank()) {
-            Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
-        } else {
-            val insertDay = if (!setting.isChecked) {
-                dateFormat.format(Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, 1)
-                }.time)
+        saveBtn.setOnClickListener {
+            if (titleEdt.text.toString().isBlank()) {
+                Toast.makeText(this@DayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
             } else {
-                dateFormat.format(Calendar.getInstance().time)
+                val insertDay = if (!setting.isChecked) {
+                    dateFormat.format(Calendar.getInstance().apply {
+                        set(Calendar.HOUR_OF_DAY, 1)
+                    }.time)
+                } else {
+                    dateFormat.format(Calendar.getInstance().time)
+                }
+                val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
+                viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
             }
-            val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-            viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, widget.isChecked, setting.isChecked))
         }
     }
 }
