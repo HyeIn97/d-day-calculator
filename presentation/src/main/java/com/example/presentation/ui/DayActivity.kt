@@ -1,5 +1,8 @@
 package com.example.presentation.ui
 
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -12,6 +15,7 @@ import com.example.domain.model.DayModel
 import com.example.presentation.R
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
+import com.example.presentation.service.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,6 +29,7 @@ class DayActivity : AppCompatActivity() {
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private val numberRange = (0..99999)
+    private var test: DayModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +55,16 @@ class DayActivity : AppCompatActivity() {
             launch {
                 viewModel.insertDay.collect {
                     it?.let {
+                        if (isServiceRunning(this@DayActivity, DayForegroundService::class.java)) {
+                            val intent = Intent(this@DayActivity, DayForegroundService::class.java).apply {
+                                putExtra("day", test!!)
+                            }
+
+                            startService(intent)
+                        } else {
+                            startForegroundService(Intent(this@DayActivity, DayForegroundService::class.java))
+                        }
+
                         finish()
                     }
                 }
@@ -58,6 +73,16 @@ class DayActivity : AppCompatActivity() {
             launch {
                 viewModel.updateDay.collect {
                     it?.let {
+                        if (isServiceRunning(this@DayActivity, DayForegroundService::class.java)) {
+                            val intent = Intent(this@DayActivity, DayForegroundService::class.java).apply {
+                                putExtra("day", test!!)
+                            }
+
+                            startService(intent)
+                        } else {
+                            startForegroundService(Intent(this@DayActivity, DayForegroundService::class.java))
+                        }
+
                         finish()
                     }
                 }
@@ -86,7 +111,8 @@ class DayActivity : AppCompatActivity() {
                         dateFormat.format(Calendar.getInstance().time)
                     }
                     val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                    viewModel.insertDay(DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked))
+                    test = DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked)
+                    viewModel.insertDay(test!!)
                 }
             } else {
                 impossibilityDialog()
@@ -116,7 +142,8 @@ class DayActivity : AppCompatActivity() {
                         dateFormat.format(Calendar.getInstance().time)
                     }
                     val endDay = daySpinner.year.toString() + "-" + (daySpinner.month + 1) + "-" + daySpinner.dayOfMonth
-                    viewModel.updateDay(DayModel(key, titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked))
+                    test = DayModel(key, titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked)
+                    viewModel.updateDay(test!!)
                 }
             } else {
                 impossibilityDialog()
@@ -129,4 +156,14 @@ class DayActivity : AppCompatActivity() {
         setContentTxt(getString(R.string.impossibility_content))
         setPositiveTxt(getString(R.string.done))
     }.show(supportFragmentManager, "deleteDialog")
+
+    private fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
+        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
 }
