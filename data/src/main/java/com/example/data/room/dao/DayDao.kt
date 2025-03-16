@@ -21,7 +21,7 @@ interface DayDao {
     @Update
     fun updateDay(day: DayEntity)
 
-    @Query("SELECT * FROM days WHERE `is_notification` = :isNotification")
+    @Query("SELECT COUNT(*) FROM days WHERE `is_notification` = :isNotification")
     fun getNotificationCount(isNotification: Boolean): Int
 
     @Query("SELECT * FROM days WHERE `is_notification` = :isNotification")

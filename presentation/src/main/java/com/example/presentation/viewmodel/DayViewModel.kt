@@ -27,6 +27,9 @@ class DayViewModel @Inject constructor(
     private val _updateDay = MutableStateFlow<Int?>(null)
     val updateDay = _updateDay.asStateFlow()
 
+    private val _notificationCount = MutableStateFlow<Boolean?>(null)
+    val notificationCount = _notificationCount.asStateFlow()
+
     fun insertDay(day: DayModel) = viewModelScope.launch {
         val success = insertDayUseCase(day)
         _insertDay.emit(success)
@@ -39,7 +42,7 @@ class DayViewModel @Inject constructor(
 
     fun getNotificationCount() = viewModelScope.launch {
         getNotificationCountUseCase().collect {
-            isNotificationPossible = 3 >= it
+            _notificationCount.emit(3 > it)
         }
     }
 }
