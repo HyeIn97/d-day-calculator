@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/outerSpace"
-    tools:context="com.example.presentation.ui.DayActivity">
+    tools:context="com.example.presentation.ui.InsertDayActivity">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/title_edt"

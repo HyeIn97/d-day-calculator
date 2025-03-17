@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
 
-                val intent = Intent(this@MainActivity, DayActivity::class.java).apply {
+                val intent = Intent(this@MainActivity, InsertDayActivity::class.java).apply {
                     putExtra("data", data)
                 }
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListener() = with(binding) {
         addBtn.setOnClickListener {
-            startActivity(Intent(this@MainActivity, DayActivity::class.java))
+            startActivity(Intent(this@MainActivity, InsertDayActivity::class.java))
         }
 
         dDayRv.setOnTouchListener { view, motionEvent ->

@@ -5,7 +5,7 @@
     <application
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".ui.DayActivity"
+            android:name=".ui.InsertDayActivity"
             android:exported="false" />
 
         <activity
