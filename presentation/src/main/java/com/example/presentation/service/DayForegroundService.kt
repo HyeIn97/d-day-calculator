@@ -16,6 +16,7 @@ import com.example.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,7 +34,6 @@ class DayForegroundService : Service() {
     private var notificationManager: NotificationManager? = null
     private var notificationChannel: NotificationChannel? = null
     private var notificationBuilder: NotificationCompat.Builder? = null
-    private val days = arrayListOf<DayModel>()
     private val job = CoroutineScope(Dispatchers.IO)
 
     override fun onBind(p0: Intent?): IBinder? = null
@@ -41,11 +41,7 @@ class DayForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        getDays().run {
-            days.map { day ->
-                createChannel(day)
-            }
-        }
+        getDays()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -95,8 +91,9 @@ class DayForegroundService : Service() {
     }
 
     private fun getDays() = job.launch {
-        getNotificationDay().collect {
-            days.addAll(it)
+        val notificationDay = getNotificationDay().first()
+        notificationDay.map { day ->
+            createChannel(day)
         }
     }
 
