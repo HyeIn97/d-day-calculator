@@ -5,11 +5,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class DayAlarmController @Inject constructor(@ApplicationContext private val context: Context) {
     fun startAlarm(intent: Intent) {
         if (isExactAlarm) {
