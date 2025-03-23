@@ -37,6 +37,17 @@
             android:name="com.example.presentation.service.DayAlarmBroadcastReceiver"
             android:exported="true"
             android:permission="TODO"/>
+
+        <receiver
+            android:name="com.example.presentation.service.DayBootBroadcastReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
