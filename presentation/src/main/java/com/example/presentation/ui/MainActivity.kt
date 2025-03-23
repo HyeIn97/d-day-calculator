@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
 
-                val intent = Intent(this@MainActivity, InsertDayActivity::class.java).apply {
+                val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
                     putExtra("data", data)
                 }
 

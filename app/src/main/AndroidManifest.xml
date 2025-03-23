@@ -28,6 +28,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.example.presentation.ui.UpdateDayActivity"
+            android:exported="true"/>
+
         <service
             android:name="com.example.presentation.service.DayForegroundService"
             android:exported="false"
@@ -35,8 +39,8 @@
 
         <receiver
             android:name="com.example.presentation.service.DayAlarmBroadcastReceiver"
-            android:exported="true"
-            android:permission="TODO"/>
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
             android:name="com.example.presentation.service.DayBootBroadcastReceiver"
