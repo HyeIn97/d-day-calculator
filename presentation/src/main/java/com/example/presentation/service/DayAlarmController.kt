@@ -24,7 +24,7 @@ class DayAlarmController @Inject constructor(@ApplicationContext private val con
             PendingIntent.getBroadcast(
                 context,
                 2000,
-                Intent(context.applicationContext, DayBroadcastReceiver::class.java),
+                Intent(context.applicationContext, DayAlarmBroadcastReceiver::class.java),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             ).also {
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager

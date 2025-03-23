@@ -7,17 +7,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DayBroadcastReceiver : BroadcastReceiver() {
+class DayAlarmBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var alarmController: DayAlarmController
 
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
-            val update = Intent().apply {
-                putExtra("update_day", true)
+            val alarmIntent = Intent(context, DayForegroundService::class.java).apply {
+                putExtra("isReboot", false)
+                putExtra("isAlarm", true)
             }
 
-            alarmController.startAlarm(update)
+            alarmController.startAlarm(alarmIntent)
         }
     }
 }

@@ -34,7 +34,7 @@
             android:foregroundServiceType="specialUse" />
 
         <receiver
-            android:name="com.example.presentation.service.DayBroadcastReceiver"
+            android:name="com.example.presentation.service.DayAlarmBroadcastReceiver"
             android:exported="true"
             android:permission="TODO"/>
     </application>
