@@ -74,7 +74,7 @@ class DayForegroundService : Service() {
 
         val notification = NotificationCompat.Builder(this@DayForegroundService, CHANEL_ID)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_large_push))
+            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_app))
             .setSmallIcon(R.drawable.ic_app)
             .setContentTitle(dayTxt)
             .setContentText(item.title)
