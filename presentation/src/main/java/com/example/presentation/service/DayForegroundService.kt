@@ -79,7 +79,7 @@ class DayForegroundService : Service() {
         val dayTxt = if (day > 0) "D+$day" else if (day == 0) "D+0" else "D" + day.toString()
 
         notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationChannel = NotificationChannel(item.key.toString(), NOTIFICATION_NAME, NotificationManager.IMPORTANCE_NONE)
+        notificationChannel = NotificationChannel(item.key.toString(), NOTIFICATION_NAME, NotificationManager.IMPORTANCE_HIGH)
         notificationBuilder = NotificationCompat.Builder(this@DayForegroundService, item.key.toString())
             .setSmallIcon(R.drawable.ic_app)
             .setContentTitle(dayTxt)
