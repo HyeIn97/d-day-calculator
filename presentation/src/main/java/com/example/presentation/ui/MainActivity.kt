@@ -3,6 +3,7 @@ package com.example.presentation.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.viewModels
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             override fun itemSettingClick(data: DayModel) {
                 super.itemSettingClick(data)
 
-                val intent = Intent(this@MainActivity, InsertDayActivity::class.java).apply {
+                val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
                     putExtra("data", data)
                 }
 
@@ -77,13 +78,13 @@ class MainActivity : AppCompatActivity() {
                 viewModel.days.collect {
                     it?.let {
                         days.clear()
+                        dayAdapter.notifyDataSetChanged()
 
                         if (it.isEmpty()) {
                             binding.topImg.visibility = View.GONE
                             binding.dDayRv.visibility = View.GONE
                             binding.emptyTxt.visibility = View.VISIBLE
                         } else {
-                            days.clear()
                             days.addAll(it)
                             dayAdapter.notifyItemRangeChanged(0, it.size)
                             binding.emptyTxt.visibility = View.GONE

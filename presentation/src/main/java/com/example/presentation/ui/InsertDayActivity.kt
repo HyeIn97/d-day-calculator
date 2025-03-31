@@ -71,13 +71,6 @@ class InsertDayActivity : AppCompatActivity() {
     }
 
     private fun initInsertListener() = with(binding) {
-        notification.setOnCheckedChangeListener { compoundButton, isChecked ->
-            if (!viewModel.isNotificationPossible && isChecked) {
-                compoundButton.isChecked = false
-                impossibilityDialog()
-            }
-        }
-
         saveBtn.setOnClickListener {
             viewModel.getNotificationCount()
         }

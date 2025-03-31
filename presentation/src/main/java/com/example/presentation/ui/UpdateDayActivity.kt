@@ -24,7 +24,7 @@ import java.util.Calendar
 import java.util.Locale
 
 @AndroidEntryPoint
-class UpdatetDayActivity : AppCompatActivity() {
+class UpdateDayActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDayBinding
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
@@ -59,14 +59,14 @@ class UpdatetDayActivity : AppCompatActivity() {
             launch {
                 viewModel.updateDay.collect {
                     it?.let {
-                        if (isServiceRunning(this@UpdatetDayActivity, DayForegroundService::class.java)) {
-                            val intent = Intent(this@UpdatetDayActivity, DayForegroundService::class.java).apply {
+                        if (isServiceRunning(this@UpdateDayActivity, DayForegroundService::class.java)) {
+                            val intent = Intent(this@UpdateDayActivity, DayForegroundService::class.java).apply {
                                 putExtra("day", dayModel!!)
                             }
 
                             startService(intent)
                         } else {
-                            startForegroundService(Intent(this@UpdatetDayActivity, DayForegroundService::class.java))
+                            startForegroundService(Intent(this@UpdateDayActivity, DayForegroundService::class.java))
                         }
 
                         finish()
@@ -93,7 +93,7 @@ class UpdatetDayActivity : AppCompatActivity() {
     private fun updateDay(isNotificationPossible: Boolean, key: Int) = with(binding) {
         if (isNotificationPossible) {
             if (titleEdt.text.toString().isBlank()) {
-                Toast.makeText(this@UpdatetDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UpdateDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
             } else {
                 val insertDay = if (!setting.isChecked) {
                     dateFormat.format(Calendar.getInstance().apply {
