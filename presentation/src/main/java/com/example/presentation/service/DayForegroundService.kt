@@ -89,8 +89,7 @@ class DayForegroundService : Service() {
 
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
-
-        startForeground(item.key, notification.build())
+        manager.notify(item.key, notification.build())
     }
 
     private fun getDays() = job.launch {
