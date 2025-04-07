@@ -8,7 +8,7 @@ import com.example.domain.usecase.GetAllDayUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,9 +19,8 @@ class MainViewModel @Inject constructor(private val getAllDayUseCase: GetAllDayU
     val days = _days.asStateFlow()
 
     fun getAllDay() = viewModelScope.launch {
-        getAllDayUseCase().collectLatest { days ->
-            _days.emit(days)
-        }
+        val allDay = getAllDayUseCase().first()
+        _days.emit(allDay)
     }
 
     fun deleteDay(key: Int) = viewModelScope.launch {
