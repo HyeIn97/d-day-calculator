@@ -1,11 +1,12 @@
 package com.example.presentation.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -32,33 +33,56 @@ class MainActivity : AppCompatActivity() {
     private val days = arrayListOf<DayModel>()
     private val swipeHelper = SwipeHelper()
 
-    private val dayAdapter by lazy {
-        DayAdapter(days, object : ItemClickListener<DayModel> {
-            override fun itemSettingClick(data: DayModel) {
-                super.itemSettingClick(data)
+    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val insertDay = result.data?.getSerializableExtra("insertDay", DayModel::class.java)
+            val updateDay = result.data?.getSerializableExtra("updateDay", DayModel::class.java)
+            val position = result.data?.getIntExtra("position", -100)
 
-                val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
-                    putExtra("data", data)
+            insertDay?.let {
+                days.add(0, it)
+                dayAdapter.notifyItemRangeInserted(0, 1)
+            }
+
+            updateDay?.let { day ->
+                position?.let { position ->
+                    if (position != -100) {
+                        days[position] = day
+                        dayAdapter.notifyItemChanged(position)
+                    }
+                }
+            }
+        }
+    }
+
+    private val dayAdapter by lazy {
+        DayAdapter(
+            days, object : ItemClickListener<DayModel> {
+                override fun itemSettingClick(position: Int, data: DayModel) {
+                    super.itemSettingClick(position, data)
+                    val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
+                        putExtra("position", position)
+                        putExtra("data", data)
+                    }
+
+                    launcher.launch(intent)
                 }
 
-                startActivity(intent)
-            }
+                override fun itemDeleteClick(data: DayModel) {
+                    super.itemDeleteClick(data)
 
-            override fun itemDeleteClick(data: DayModel) {
-                super.itemDeleteClick(data)
-
-                CustomDialog().Builder().apply {
-                    setIsSingleBtn(false)
-                    setTitleTxt(getString(R.string.dialog_title))
-                    setContentTxt(getString(R.string.dialog_content))
-                    setPositiveTxt(getString(R.string.positive))
-                    setNegativeTxt(getString(R.string.negative))
-                    setPositiveListener {
-                        viewModel.deleteDay(data.key)
-                    }
-                }.show(supportFragmentManager, "deleteDialog")
-            }
-        })
+                    CustomDialog().Builder().apply {
+                        setIsSingleBtn(false)
+                        setTitleTxt(getString(R.string.dialog_title))
+                        setContentTxt(getString(R.string.dialog_content))
+                        setPositiveTxt(getString(R.string.positive))
+                        setNegativeTxt(getString(R.string.negative))
+                        setPositiveListener {
+                            viewModel.deleteDay(data.key)
+                        }
+                    }.show(supportFragmentManager, "deleteDialog")
+                }
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +102,6 @@ class MainActivity : AppCompatActivity() {
                 viewModel.days.collect {
                     it?.let {
                         days.clear()
-                        dayAdapter.notifyDataSetChanged()
 
                         if (it.isEmpty()) {
                             binding.topImg.visibility = View.GONE
@@ -110,7 +133,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun initListener() = with(binding) {
         addBtn.setOnClickListener {
-            startActivity(Intent(this@MainActivity, InsertDayActivity::class.java))
+            launcher.launch(Intent(this@MainActivity, InsertDayActivity::class.java))
         }
 
         dDayRv.setOnTouchListener { view, motionEvent ->

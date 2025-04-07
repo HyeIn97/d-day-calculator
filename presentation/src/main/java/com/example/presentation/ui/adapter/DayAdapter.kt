@@ -20,7 +20,7 @@ class DayAdapter(
         return DayViewHolder(ItemDayBinding.inflate(LayoutInflater.from(parent.context), parent, false)).apply {
             val settingBtn = itemView.findViewById<LinearLayout>(R.id.setting_btn)
             settingBtn.setOnClickListener {
-                onClick.itemSettingClick(days[adapterPosition])
+                onClick.itemSettingClick(adapterPosition, days[adapterPosition])
             }
 
             val deleteBtn = itemView.findViewById<LinearLayout>(R.id.delete_btn)

@@ -1,7 +1,6 @@
 package com.example.presentation.ui
 
-import android.app.ActivityManager
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.DayModel
 import com.example.presentation.R
-import com.example.presentation.common.CreateDayNotification
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
+import com.example.presentation.helper.NotificationHelper
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,14 +25,14 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class InsertDayActivity : AppCompatActivity() {
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
+
     private lateinit var binding: ActivityDayBinding
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private val numberRange = (0..99999)
     private var dayModel: DayModel? = null
-
-    @Inject
-    private lateinit var createDayNotification: CreateDayNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,24 +56,17 @@ class InsertDayActivity : AppCompatActivity() {
             launch {
                 viewModel.insertDay.collect {
                     it?.let {
-//                        if (isServiceRunning(this@InsertDayActivity, DayForegroundService::class.java)) {
-//                            val intent = Intent(this@InsertDayActivity, DayForegroundService::class.java).apply {
-//                                putExtra("day", dayModel!!)
-//                            }
-//
-//                            startService(intent)
-//                        } else {
-//                            startForegroundService(Intent(this@InsertDayActivity, DayForegroundService::class.java))
-//                        }
-
-                        val intent = Intent(this@InsertDayActivity, DayModel::class.java).apply {
+                        val intent = Intent(this@InsertDayActivity, NotificationHelper::class.java).apply {
                             putExtra("day", dayModel!!)
                         }
 
+                        notificationHelper.createNotify(intent)
 
-                        createDayNotification.makeNotify(intent)
+                        val resultIntent = Intent().apply {
+                            putExtra("insertDay", dayModel)
+                        }
 
-
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     }
                 }
@@ -114,14 +106,4 @@ class InsertDayActivity : AppCompatActivity() {
         setContentTxt(getString(R.string.impossibility_content))
         setPositiveTxt(getString(R.string.done))
     }.show(supportFragmentManager, "deleteDialog")
-
-    private fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
-        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                return true
-            }
-        }
-        return false
-    }
 }

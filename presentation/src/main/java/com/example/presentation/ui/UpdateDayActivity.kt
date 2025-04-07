@@ -1,5 +1,6 @@
 package com.example.presentation.ui
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -29,6 +30,7 @@ class UpdateDayActivity : AppCompatActivity() {
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private var dayModel: DayModel? = null
+    private var position : Int = -100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,7 @@ class UpdateDayActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val updateDay = intent.getSerializableExtra("data", DayModel::class.java)
+        position = intent.getIntExtra("position", -100)
 
         updateDay?.let {
             dayModel = it
@@ -59,16 +62,12 @@ class UpdateDayActivity : AppCompatActivity() {
             launch {
                 viewModel.updateDay.collect {
                     it?.let {
-                        if (isServiceRunning(this@UpdateDayActivity, DayForegroundService::class.java)) {
-                            val intent = Intent(this@UpdateDayActivity, DayForegroundService::class.java).apply {
-                                putExtra("day", dayModel!!)
-                            }
-
-                            startService(intent)
-                        } else {
-                            startForegroundService(Intent(this@UpdateDayActivity, DayForegroundService::class.java))
+                        val resultIntent = Intent().apply {
+                            putExtra("insertDay", dayModel)
+                            putExtra("day", dayModel!!)
                         }
 
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     }
                 }
