@@ -33,17 +33,17 @@
             android:exported="true"/>
 
         <service
-            android:name="com.example.presentation.service.DayForegroundService"
+            android:name="com.example.presentation.receiver.DayForegroundService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
 
         <receiver
-            android:name="com.example.presentation.service.DayAlarmBroadcastReceiver"
+            android:name="com.example.presentation.receiver.DayAlarmBroadcastReceiver"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name="com.example.presentation.service.DayBootBroadcastReceiver"
+            android:name="com.example.presentation.receiver.DayBootBroadcastReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="false">

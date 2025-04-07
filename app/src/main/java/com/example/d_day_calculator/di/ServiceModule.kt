@@ -3,7 +3,7 @@ package com.example.d_day_calculator.di
 import android.content.Context
 import com.example.domain.repository.DayDataRepository
 import com.example.domain.usecase.GetNotificationDayUseCase
-import com.example.presentation.service.DayAlarmController
+import com.example.presentation.receiver.DayAlarmController
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

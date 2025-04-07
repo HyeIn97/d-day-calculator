@@ -1,4 +1,4 @@
-package com.example.presentation.service
+package com.example.presentation.receiver
 
 import android.app.AlarmManager
 import android.app.PendingIntent

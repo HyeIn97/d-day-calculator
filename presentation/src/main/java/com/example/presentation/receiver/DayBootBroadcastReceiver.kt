@@ -1,4 +1,4 @@
-package com.example.presentation.service
+package com.example.presentation.receiver
 
 import android.Manifest
 import android.content.BroadcastReceiver
