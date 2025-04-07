@@ -25,6 +25,7 @@ import javax.inject.Inject
 class NotificationHelper @Inject constructor(private val context: Context) {
     private val CHANEL_ID = "10001"
     private val CHANEL_NAME = "DAY_CHANEL"
+    private val manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
     private var notificationChannel: NotificationChannel? = null
     private val job = CoroutineScope(Dispatchers.IO)
 
@@ -32,14 +33,28 @@ class NotificationHelper @Inject constructor(private val context: Context) {
         if (isNotificationPermission()) {
             intent?.let {
                 val newDay = it.getSerializableExtra("day", DayModel::class.java)
+
                 newDay?.let { day ->
-                    notificationChannel?.let {
+                    if (hasChannel()) {
                         registerNotification(day)
-                    } ?: run {
+                    } else {
                         createChannel(day)
                     }
                 }
             }
+        }
+    }
+
+    private fun hasChannel() = manager.getNotificationChannel(CHANEL_ID) != null
+
+    private fun createChannel(item: DayModel) = job.launch {
+        notificationChannel = NotificationChannel(CHANEL_ID, CHANEL_NAME, IMPORTANCE_HIGH).apply {
+            setShowBadge(false)
+        }
+
+        notificationChannel?.let {
+            manager.createNotificationChannel(it)
+            registerNotification(item)
         }
     }
 
@@ -67,27 +82,8 @@ class NotificationHelper @Inject constructor(private val context: Context) {
             .setShowWhen(false)
             .setAutoCancel(false)
 
-        notificationChannel?.let { channel ->
-            val manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel)
-            manager.notify(item.key, notification.build())
-        }
+        manager.notify(item.key, notification.build())
     }
-
-    private fun createChannel(item: DayModel) = job.launch {
-        notificationChannel = NotificationChannel(CHANEL_ID, CHANEL_NAME, IMPORTANCE_HIGH).apply {
-            setShowBadge(false)
-        }
-
-        registerNotification(item)
-    }
-
-//    private fun getDays() = job.launch {
-//        val notificationDay = getNotificationDayUseCase().first()
-//        notificationDay.map { day ->
-//            createChannel(day)
-//        }
-//    }
 
     @SuppressLint("InlinedApi")
     private fun isNotificationPermission(): Boolean {
