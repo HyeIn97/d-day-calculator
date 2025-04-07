@@ -1,4 +1,4 @@
-package com.example.presentation.common
+package com.example.presentation.helper
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -13,24 +13,22 @@ import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.example.domain.model.DayModel
-import com.example.domain.usecase.GetNotificationDayUseCase
 import com.example.presentation.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 
-class CreateDayNotification @Inject constructor(private val context: Context, private val getNotificationDayUseCase: GetNotificationDayUseCase) {
+class NotificationHelper @Inject constructor(private val context: Context) {
     private val CHANEL_ID = "10001"
     private val CHANEL_NAME = "DAY_CHANEL"
     private var notificationChannel: NotificationChannel? = null
     private val job = CoroutineScope(Dispatchers.IO)
 
-    fun makeNotify(intent: Intent?) {
+    fun createNotify(intent: Intent?) {
         if (isNotificationPermission()) {
             intent?.let {
                 val newDay = it.getSerializableExtra("day", DayModel::class.java)
@@ -84,12 +82,12 @@ class CreateDayNotification @Inject constructor(private val context: Context, pr
         registerNotification(item)
     }
 
-    private fun getDays() = job.launch {
-        val notificationDay = getNotificationDayUseCase().first()
-        notificationDay.map { day ->
-            createChannel(day)
-        }
-    }
+//    private fun getDays() = job.launch {
+//        val notificationDay = getNotificationDayUseCase().first()
+//        notificationDay.map { day ->
+//            createChannel(day)
+//        }
+//    }
 
     @SuppressLint("InlinedApi")
     private fun isNotificationPermission(): Boolean {
