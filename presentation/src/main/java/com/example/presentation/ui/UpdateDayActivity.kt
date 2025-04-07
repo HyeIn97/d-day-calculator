@@ -15,7 +15,7 @@ import com.example.domain.model.DayModel
 import com.example.presentation.R
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
-import com.example.presentation.service.DayForegroundService
+import com.example.presentation.receiver.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

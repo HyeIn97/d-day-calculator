@@ -13,15 +13,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.domain.model.DayModel
 import com.example.presentation.R
+import com.example.presentation.common.CreateDayNotification
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
-import com.example.presentation.service.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class InsertDayActivity : AppCompatActivity() {
@@ -30,6 +31,9 @@ class InsertDayActivity : AppCompatActivity() {
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private val numberRange = (0..99999)
     private var dayModel: DayModel? = null
+
+    @Inject
+    private lateinit var createDayNotification: CreateDayNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +57,23 @@ class InsertDayActivity : AppCompatActivity() {
             launch {
                 viewModel.insertDay.collect {
                     it?.let {
-                        if (isServiceRunning(this@InsertDayActivity, DayForegroundService::class.java)) {
-                            val intent = Intent(this@InsertDayActivity, DayForegroundService::class.java).apply {
-                                putExtra("day", dayModel!!)
-                            }
+//                        if (isServiceRunning(this@InsertDayActivity, DayForegroundService::class.java)) {
+//                            val intent = Intent(this@InsertDayActivity, DayForegroundService::class.java).apply {
+//                                putExtra("day", dayModel!!)
+//                            }
+//
+//                            startService(intent)
+//                        } else {
+//                            startForegroundService(Intent(this@InsertDayActivity, DayForegroundService::class.java))
+//                        }
 
-                            startService(intent)
-                        } else {
-                            startForegroundService(Intent(this@InsertDayActivity, DayForegroundService::class.java))
+                        val intent = Intent(this@InsertDayActivity, DayModel::class.java).apply {
+                            putExtra("day", dayModel!!)
                         }
+
+
+                        createDayNotification.makeNotify(intent)
+
 
                         finish()
                     }
