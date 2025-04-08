@@ -1,6 +1,5 @@
 package com.example.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.DayModel
@@ -43,7 +42,6 @@ class DayViewModel @Inject constructor(
 
     fun getNotificationCount() = viewModelScope.launch {
         getNotificationCountUseCase().collect {
-            Log.d("Henna", "하... 대갈이 아파  : $it")
             isNotificationPossible = 3 > it
             _notificationCount.emit(3 > it)
         }

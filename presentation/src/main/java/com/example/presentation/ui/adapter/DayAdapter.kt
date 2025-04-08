@@ -25,7 +25,7 @@ class DayAdapter(
 
             val deleteBtn = itemView.findViewById<LinearLayout>(R.id.delete_btn)
             deleteBtn.setOnClickListener {
-                onClick.itemDeleteClick(days[adapterPosition])
+                onClick.itemDeleteClick(adapterPosition, days[adapterPosition])
             }
         }
     }

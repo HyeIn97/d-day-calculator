@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,16 +17,17 @@ class MainViewModel @Inject constructor(private val getAllDayUseCase: GetAllDayU
     private val _days = MutableStateFlow<ArrayList<DayModel>?>(null)
     val days = _days.asStateFlow()
 
+    private val _deletePosition = MutableStateFlow<Int?>(null)
+    val deletePosition = _deletePosition.asStateFlow()
+
     fun getAllDay() = viewModelScope.launch {
         val allDay = getAllDayUseCase().first()
         _days.emit(allDay)
     }
 
-    fun deleteDay(key: Int) = viewModelScope.launch {
-        deleteDayUseCase(key).flatMapLatest {
-            getAllDayUseCase()
-        }.collect { days ->
-            _days.emit(days)
+    fun deleteDay(key: Int, position: Int) = viewModelScope.launch {
+        deleteDayUseCase(key).collect {
+            _deletePosition.emit(position)
         }
     }
 }

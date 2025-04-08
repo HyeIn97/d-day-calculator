@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
                     goUpdate(position, data)
                 }
 
-                override fun itemDeleteClick(data: DayModel) {
-                    super.itemDeleteClick(data)
+                override fun itemDeleteClick(position: Int, data: DayModel) {
+                    super.itemDeleteClick(position, data)
 
                     CustomDialog().Builder().apply {
                         setIsSingleBtn(false)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                         setPositiveTxt(getString(R.string.positive))
                         setNegativeTxt(getString(R.string.negative))
                         setPositiveListener {
-                            viewModel.deleteDay(data.key)
+                            viewModel.deleteDay(data.key, position)
                         }
                     }.show(supportFragmentManager, "deleteDialog")
                 }
