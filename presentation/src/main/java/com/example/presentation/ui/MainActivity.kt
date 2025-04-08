@@ -60,12 +60,8 @@ class MainActivity : AppCompatActivity() {
             days, object : ItemClickListener<DayModel> {
                 override fun itemSettingClick(position: Int, data: DayModel) {
                     super.itemSettingClick(position, data)
-                    val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
-                        putExtra("position", position)
-                        putExtra("data", data)
-                    }
 
-                    launcher.launch(intent)
+                    goUpdate(position, data)
                 }
 
                 override fun itemDeleteClick(data: DayModel) {
@@ -140,5 +136,14 @@ class MainActivity : AppCompatActivity() {
             swipeHelper.removePreviousClamp(dDayRv)
             false
         }
+    }
+
+    private fun goUpdate(position: Int, data: DayModel) {
+        val intent = Intent(this@MainActivity, UpdateDayActivity::class.java).apply {
+            putExtra("position", position)
+            putExtra("data", data)
+        }
+
+        launcher.launch(intent)
     }
 }
