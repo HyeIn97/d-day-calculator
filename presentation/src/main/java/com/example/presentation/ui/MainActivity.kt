@@ -1,6 +1,5 @@
 package com.example.presentation.ui
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             val position = result.data?.getIntExtra("position", -100)
 
             insertDay?.let {
+                if (days.isEmpty()) hasDaysView()
                 days.add(0, it)
                 dayAdapter.notifyItemRangeInserted(0, 1)
             }
@@ -97,23 +97,36 @@ class MainActivity : AppCompatActivity() {
             launch {
                 viewModel.days.collect {
                     it?.let {
-                        days.clear()
+                        if (it.isEmpty()) isEmptyView() else hasDaysView()
 
-                        if (it.isEmpty()) {
-                            binding.topImg.visibility = View.GONE
-                            binding.dDayRv.visibility = View.GONE
-                            binding.emptyTxt.visibility = View.VISIBLE
-                        } else {
-                            days.addAll(it)
-                            dayAdapter.notifyItemRangeChanged(0, it.size)
-                            binding.emptyTxt.visibility = View.GONE
-                            binding.topImg.visibility = View.VISIBLE
-                            binding.dDayRv.visibility = View.VISIBLE
-                        }
+                        days.clear()
+                        days.addAll(it)
+                        dayAdapter.notifyItemRangeChanged(0, it.size)
+                    }
+                }
+            }
+
+            launch {
+                viewModel.deletePosition.collect {
+                    it?.let {
+                        days.removeAt(it)
+                        dayAdapter.notifyItemRemoved(it)
                     }
                 }
             }
         }
+    }
+
+    private fun isEmptyView() = with(binding) {
+        topImg.visibility = View.GONE
+        dDayRv.visibility = View.GONE
+        emptyTxt.visibility = View.VISIBLE
+    }
+
+    private fun hasDaysView() = with(binding) {
+        emptyTxt.visibility = View.GONE
+        topImg.visibility = View.VISIBLE
+        dDayRv.visibility = View.VISIBLE
     }
 
     private fun initAdapter() = with(binding) {
@@ -126,7 +139,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initListener() = with(binding) {
         addBtn.setOnClickListener {
             launcher.launch(Intent(this@MainActivity, InsertDayActivity::class.java))
