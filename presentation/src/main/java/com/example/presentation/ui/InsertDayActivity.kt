@@ -54,11 +54,13 @@ class InsertDayActivity : AppCompatActivity() {
             launch {
                 viewModel.insertDay.collect {
                     it?.let {
-                        val intent = Intent(this@InsertDayActivity, NotificationHelper::class.java).apply {
-                            putExtra("day", dayModel!!)
-                        }
+                        if (binding.notification.isChecked) {
+                            val intent = Intent(this@InsertDayActivity, NotificationHelper::class.java).apply {
+                                putExtra("day", dayModel!!)
+                            }
 
-                        notificationHelper.createNotify(intent)
+                            notificationHelper.createNotify(intent)
+                        }
 
                         val resultIntent = Intent().apply {
                             putExtra("insertDay", dayModel)

@@ -14,15 +14,20 @@ import com.example.domain.model.DayModel
 import com.example.presentation.R
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
+import com.example.presentation.helper.NotificationHelper
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UpdateDayActivity : AppCompatActivity() {
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
+
     private lateinit var binding: ActivityDayBinding
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
@@ -57,6 +62,14 @@ class UpdateDayActivity : AppCompatActivity() {
             launch {
                 viewModel.updateDay.collect {
                     it?.let {
+                        if (binding.notification.isChecked) {
+                            val intent = Intent(this@UpdateDayActivity, NotificationHelper::class.java).apply {
+                                putExtra("day", dayModel!!)
+                            }
+
+                            notificationHelper.createNotify(intent)
+                        }
+
                         val resultIntent = Intent().apply {
                             putExtra("updateDay", dayModel)
                             putExtra("position", position)
