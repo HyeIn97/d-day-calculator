@@ -47,9 +47,7 @@ class InsertDayActivity : AppCompatActivity() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 viewModel.notificationCount.collect {
-                    it?.let {
-                        insertDay(it)
-                    }
+                    insertDay(it)
                 }
             }
 
@@ -81,9 +79,11 @@ class InsertDayActivity : AppCompatActivity() {
     }
 
     private fun insertDay(isNotificationPossible: Boolean) = with(binding) {
-        if (isNotificationPossible) {
-            if (titleEdt.text.toString().isBlank()) {
-                Toast.makeText(this@InsertDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+        if (titleEdt.text.toString().isBlank()) {
+            Toast.makeText(this@InsertDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+        } else {
+            if (!isNotificationPossible && notification.isChecked) {
+                impossibilityDialog()
             } else {
                 val insertDay = if (!setting.isChecked) {
                     dateFormat.format(Calendar.getInstance().apply {
@@ -96,8 +96,6 @@ class InsertDayActivity : AppCompatActivity() {
                 dayModel = DayModel(numberRange.random(), titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked)
                 viewModel.insertDay(dayModel!!)
             }
-        } else {
-            impossibilityDialog()
         }
     }
 

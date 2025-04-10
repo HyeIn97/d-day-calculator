@@ -1,8 +1,6 @@
 package com.example.presentation.ui
 
 import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +14,6 @@ import com.example.domain.model.DayModel
 import com.example.presentation.R
 import com.example.presentation.common.CustomDialog
 import com.example.presentation.databinding.ActivityDayBinding
-import com.example.presentation.receiver.DayForegroundService
 import com.example.presentation.viewmodel.DayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,7 +27,7 @@ class UpdateDayActivity : AppCompatActivity() {
     private val viewModel: DayViewModel by viewModels()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
     private var dayModel: DayModel? = null
-    private var position : Int = -100
+    private var position: Int = -100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +50,7 @@ class UpdateDayActivity : AppCompatActivity() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 viewModel.notificationCount.collect {
-                    it?.let {
-                        updateDay(it, dayModel?.key ?: 0)
-                    }
+                    updateDay(it, dayModel?.key ?: 0)
                 }
             }
 
@@ -90,9 +85,11 @@ class UpdateDayActivity : AppCompatActivity() {
     }
 
     private fun updateDay(isNotificationPossible: Boolean, key: Int) = with(binding) {
-        if (isNotificationPossible) {
-            if (titleEdt.text.toString().isBlank()) {
-                Toast.makeText(this@UpdateDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+        if (titleEdt.text.toString().isBlank()) {
+            Toast.makeText(this@UpdateDayActivity, getString(R.string.empty_title), Toast.LENGTH_SHORT).show()
+        } else {
+            if (!isNotificationPossible && notification.isChecked) {
+                impossibilityDialog()
             } else {
                 val insertDay = if (!setting.isChecked) {
                     dateFormat.format(Calendar.getInstance().apply {
@@ -105,8 +102,6 @@ class UpdateDayActivity : AppCompatActivity() {
                 dayModel = DayModel(key, titleEdt.text.toString(), insertDay, endDay, notification.isChecked, setting.isChecked)
                 viewModel.updateDay(dayModel!!)
             }
-        } else {
-            impossibilityDialog()
         }
     }
 
