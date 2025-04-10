@@ -7,7 +7,9 @@ import com.example.domain.usecase.GetNotificationCountUseCase
 import com.example.domain.usecase.InsertDayUseCase
 import com.example.domain.usecase.UpdateDayUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -19,16 +21,14 @@ class DayViewModel @Inject constructor(
     private val updateDayUseCase: UpdateDayUseCase,
     private val getNotificationCountUseCase: GetNotificationCountUseCase
 ) : ViewModel() {
-    var isNotificationPossible = false
-
     private val _insertDay = MutableStateFlow<Int?>(null)
     val insertDay = _insertDay.asStateFlow()
 
     private val _updateDay = MutableStateFlow<Int?>(null)
     val updateDay = _updateDay.asStateFlow()
 
-    private val _notificationCount = MutableStateFlow<Boolean?>(null)
-    val notificationCount = _notificationCount.asStateFlow()
+    private val _notificationCount = MutableSharedFlow<Boolean>()
+    val notificationCount = _notificationCount.asSharedFlow()
 
     fun insertDay(day: DayModel) = viewModelScope.launch {
         val success = insertDayUseCase(day)
@@ -42,7 +42,6 @@ class DayViewModel @Inject constructor(
 
     fun getNotificationCount() = viewModelScope.launch {
         getNotificationCountUseCase().collect {
-            isNotificationPossible = 3 > it
             _notificationCount.emit(3 > it)
         }
     }
