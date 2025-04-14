@@ -45,6 +45,18 @@ class NotificationHelper @Inject constructor(private val context: Context) {
         }
     }
 
+    fun removeNotify(intent: Intent?) {
+        if (isNotificationPermission()) {
+            intent?.let {
+                val key = it.getIntExtra("key", -200)
+
+                if (key != -200) {
+                    manager.cancel(key)
+                }
+            }
+        }
+    }
+
     private fun hasChannel() = manager.getNotificationChannel(CHANEL_ID) != null
 
     private fun createChannel(item: DayModel) = job.launch {

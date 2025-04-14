@@ -60,6 +60,12 @@ class InsertDayActivity : AppCompatActivity() {
                             }
 
                             notificationHelper.createNotify(intent)
+                        } else {
+                            val intent = Intent(this@InsertDayActivity, NotificationHelper::class.java).apply {
+                                putExtra("key", dayModel?.key ?: -200)
+                            }
+
+                            notificationHelper.removeNotify(intent)
                         }
 
                         val resultIntent = Intent().apply {
